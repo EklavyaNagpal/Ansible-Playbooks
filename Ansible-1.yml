@@ -1,0 +1,34 @@
+--- # Ansible Scripts
+- hosts: developers
+  user: Ansible
+  become: yes
+  connection: ssh
+  gather_facts: yes
+
+  vars:
+        pkgname: httpd
+  tasks:
+        - name: install httpd servers on nodes mapped to developers group
+          action: yum name='{{pkgname}}'' state=present
+          notify: restart httpd
+
+        - name: add list of users
+          action: user name='{{item}}' state=present
+          with items:
+                - EKLAVYA
+                - Nagpal
+                - EN
+                - ENN
+          
+        - name: Using conditions to install apache server on Debian
+          command: apt-get -y install apache2
+          when: ansible_os_family=="Debian"
+
+        - name: Using conditions to install apache server on RedHat
+          command: yum -y install httpd
+          when: ansible_os_family=="RedHat"
+
+  handlers:
+        - name: restart httpd 
+          action: service name=httpd state=restarted
+
