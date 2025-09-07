@@ -1,0 +1,24 @@
+--- # Ansible Playbook for Configuration Management, Mostly contains the concepts of Variables, tasks, Handlers, Conditions.
+- hosts: Developers
+  user: Ansible-2
+  become: yes
+  connection: ssh
+  gather_facts: yes
+
+  vars:
+        pkgname1: apache2
+
+  tasks:
+        - name: Install apache server in Debian server
+          action: apt-get name='{{pkgname1}}' state=present
+          notify: Restart apache server
+
+        - name: Install apache server in Debian using conditions
+          command: apt-get install -y apache2
+          when: ansible_os_family="Debian"
+
+  handlers:
+        - name: Restart apache server
+          action: service=apache2 state=restarted
+
+  

@@ -1,6 +1,6 @@
 --- # Ansible Scripts
 - hosts: developers
-  user: Ansible
+  user: Ansible-1
   become: yes
   connection: ssh
   gather_facts: yes
@@ -9,7 +9,7 @@
         pkgname: httpd
   tasks:
         - name: install httpd servers on nodes mapped to developers group
-          action: yum name='{{pkgname}}'' state=present
+          action: yum name='{{pkgname}}' state=present
           notify: restart httpd
 
         - name: add list of users
